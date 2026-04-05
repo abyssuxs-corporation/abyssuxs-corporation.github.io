@@ -1,0 +1,307 @@
+---
+export interface Props {
+  title?: string;
+}
+const { title = "Chandra — Graphic Designer & Digital Artist" } = Astro.props;
+---
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Chandra — Graphic Designer & Digital Artist. Portfolio, commissions, and contact." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Epilogue:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+    <style is:global>
+      /* ─── CSS Variables ─────────────────────────── */
+      :root {
+        --bg:         #111F35;
+        --bg-card:    rgba(17, 31, 53, 0.7);
+        --surface:    rgba(138, 36, 75, 0.08);
+        --border:     rgba(208, 39, 82, 0.18);
+        --border-hi:  rgba(246, 48, 73, 0.5);
+        --accent-1:   #8A244B;
+        --accent-2:   #D02752;
+        --accent-3:   #F63049;
+        --text:       #E8EDF5;
+        --text-dim:   rgba(232, 237, 245, 0.55);
+        --text-faint: rgba(232, 237, 245, 0.25);
+        --grid-color: rgba(208, 39, 82, 0.06);
+        --glow:       0 0 24px rgba(246, 48, 73, 0.15);
+        --glow-hi:    0 0 40px rgba(246, 48, 73, 0.3);
+      }
+
+      html.light {
+        --bg:         #EFECE3;
+        --bg-card:    rgba(239, 236, 227, 0.8);
+        --surface:    rgba(143, 171, 212, 0.12);
+        --border:     rgba(74, 112, 169, 0.2);
+        --border-hi:  rgba(74, 112, 169, 0.5);
+        --accent-1:   #4A70A9;
+        --accent-2:   #4A70A9;
+        --accent-3:   #2d5487;
+        --text:       #1a2436;
+        --text-dim:   rgba(26, 36, 54, 0.6);
+        --text-faint: rgba(26, 36, 54, 0.25);
+        --grid-color: rgba(74, 112, 169, 0.07);
+        --glow:       0 0 24px rgba(74, 112, 169, 0.12);
+        --glow-hi:    0 0 40px rgba(74, 112, 169, 0.25);
+      }
+
+      /* ─── Base Reset ─────────────────────────────── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      html {
+        scroll-behavior: smooth;
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Epilogue', sans-serif;
+        font-weight: 400;
+        transition: background-color 0.4s ease, color 0.4s ease;
+      }
+
+      body {
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* ─── Grid Background ────────────────────────── */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(var(--grid-color) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+        background-size: 48px 48px;
+        pointer-events: none;
+        z-index: 0;
+        transition: background-image 0.4s ease;
+      }
+
+      /* ─── Noise Overlay ──────────────────────────── */
+      body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+        background-size: 256px;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.4;
+      }
+
+      /* ─── Typography ─────────────────────────────── */
+      .font-display { font-family: 'Syne', sans-serif; }
+      .font-mono    { font-family: 'DM Mono', monospace; }
+
+      /* ─── Scrollbar ──────────────────────────────── */
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: var(--bg); }
+      ::-webkit-scrollbar-thumb { background: var(--accent-2); border-radius: 2px; }
+
+      /* ─── Selection ──────────────────────────────── */
+      ::selection { background: var(--accent-2); color: #fff; }
+
+      /* ─── Utility Classes ────────────────────────── */
+      .glass {
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      .glass:hover {
+        border-color: var(--border-hi);
+        box-shadow: var(--glow);
+      }
+
+      .tag {
+        font-family: 'DM Mono', monospace;
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--accent-3);
+        padding: 2px 8px;
+        border: 1px solid var(--border-hi);
+        border-radius: 2px;
+        display: inline-block;
+      }
+
+      /* ─── Reveal Animation ───────────────────────── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ─── Section Label ──────────────────────────── */
+      .section-label {
+        font-family: 'DM Mono', monospace;
+        font-size: 0.65rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--accent-3);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1.25rem;
+      }
+      .section-label::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, var(--border-hi), transparent);
+        max-width: 120px;
+      }
+
+      /* ─── Glitch Name ────────────────────────────── */
+      .glitch-wrap {
+        position: relative;
+        display: inline-block;
+      }
+      .glitch-wrap::before,
+      .glitch-wrap::after {
+        content: attr(data-text);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        font-family: 'Syne', sans-serif;
+        font-weight: 800;
+      }
+      .glitch-wrap::before {
+        color: var(--accent-3);
+        animation: glitch-1 3.5s infinite;
+        clip-path: polygon(0 15%, 100% 15%, 100% 40%, 0 40%);
+      }
+      .glitch-wrap::after {
+        color: var(--accent-1);
+        animation: glitch-2 3.5s infinite;
+        clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+      }
+      @keyframes glitch-1 {
+        0%, 90%, 100% { transform: none; opacity: 0; }
+        91% { transform: translateX(-3px); opacity: 0.8; }
+        93% { transform: translateX(3px); opacity: 0.8; }
+        95% { transform: none; opacity: 0; }
+      }
+      @keyframes glitch-2 {
+        0%, 88%, 100% { transform: none; opacity: 0; }
+        89% { transform: translateX(3px); opacity: 0.6; }
+        92% { transform: translateX(-2px); opacity: 0.6; }
+        94% { transform: none; opacity: 0; }
+      }
+
+      /* ─── Cursor Glow ────────────────────────────── */
+      #cursor-glow {
+        pointer-events: none;
+        position: fixed;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(246,48,73,0.05) 0%, transparent 70%);
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        transition: opacity 0.3s ease;
+      }
+      html.light #cursor-glow {
+        background: radial-gradient(circle, rgba(74,112,169,0.06) 0%, transparent 70%);
+      }
+
+      /* ─── Accent Lines ───────────────────────────── */
+      .accent-line {
+        width: 48px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+        border-radius: 1px;
+      }
+
+      /* ─── Card Hover Tilt (via JS) ───────────────── */
+      .tilt-card {
+        transform-style: preserve-3d;
+        transition: transform 0.15s ease;
+        will-change: transform;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cursor-glow"></div>
+    <slot />
+
+    <script>
+      // ── Theme Toggle ──────────────────────────────
+      const html = document.documentElement;
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      if (savedTheme === 'light') html.classList.replace('dark', 'light');
+
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const isDark = html.classList.contains('dark');
+        html.classList.toggle('dark', !isDark);
+        html.classList.toggle('light', isDark);
+        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      });
+
+      // ── Cursor Glow ───────────────────────────────
+      const glow = document.getElementById('cursor-glow');
+      document.addEventListener('mousemove', e => {
+        if (glow) {
+          glow.style.left = e.clientX + 'px';
+          glow.style.top  = e.clientY + 'px';
+        }
+      });
+
+      // ── Reveal on Scroll ──────────────────────────
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+      // ── Card Tilt ─────────────────────────────────
+      document.querySelectorAll('.tilt-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const dx = (e.clientX - cx) / (rect.width / 2);
+          const dy = (e.clientY - cy) / (rect.height / 2);
+          card.style.transform = `perspective(800px) rotateY(${dx * 6}deg) rotateX(${-dy * 6}deg) scale(1.02)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(800px) rotateY(0) rotateX(0) scale(1)';
+        });
+      });
+
+      // ── Active Nav Link ───────────────────────────
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
+      const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(l => l.classList.remove('nav-active'));
+            const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+            active?.classList.add('nav-active');
+          }
+        });
+      }, { threshold: 0.4 });
+      sections.forEach(s => navObserver.observe(s));
+    </script>
+  </body>
+</html>

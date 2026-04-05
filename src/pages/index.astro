@@ -1,0 +1,618 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// ─── WORKS DATA ──────────────────────────────────────────────
+// Edit these to add your real works. type: 'photo' | 'video'
+const works = [
+  {
+    id: 1,
+    title: "Racing Miku 2026 Fan Art",
+    type: "photo",
+    category: "Illustration",
+    platform: "Instagram",
+    url: "https://instagram.com/",
+    thumb: "https://images.unsplash.com/photo-1614729939124-032d1e6c4848?w=600&q=80",
+    year: "2026",
+  },
+  {
+    id: 2,
+    title: "FLS3N Poster — Batas Ini Milikku",
+    type: "photo",
+    category: "Poster Design",
+    platform: "Instagram",
+    url: "https://instagram.com/",
+    thumb: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600&q=80",
+    year: "2026",
+  },
+  {
+    id: 3,
+    title: "Speedpaint Timelapse — Miku",
+    type: "video",
+    category: "Digital Art",
+    platform: "Instagram Reels",
+    url: "https://instagram.com/",
+    thumb: "https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=600&q=80",
+    year: "2025",
+  },
+  {
+    id: 4,
+    title: "Le Bluefield — Brand Identity",
+    type: "photo",
+    category: "Branding",
+    platform: "Behance",
+    url: "https://behance.net/",
+    thumb: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80",
+    year: "2025",
+  },
+  {
+    id: 5,
+    title: "Puella Magi — Fan Illustration",
+    type: "photo",
+    category: "Illustration",
+    platform: "Twitter/X",
+    url: "https://x.com/",
+    thumb: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80",
+    year: "2025",
+  },
+  {
+    id: 6,
+    title: "Arknights Endfield — Speedpaint",
+    type: "video",
+    category: "Digital Art",
+    platform: "Instagram Reels",
+    url: "https://instagram.com/",
+    thumb: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80",
+    year: "2025",
+  },
+];
+
+// ─── COMMISSION DATA ─────────────────────────────────────────
+const commissions = [
+  {
+    tier: "01",
+    name: "Chibi / Icon",
+    price: "Rp 50.000",
+    priceNote: "per character",
+    desc: "Cute chibi-style character, flat color or simple shading. Great for profile icons or stickers.",
+    includes: ["1 Character", "Flat / Cel Shading", "PNG Export", "1 Revision"],
+    turnaround: "3–5 days",
+    accent: false,
+  },
+  {
+    tier: "02",
+    name: "Half Body",
+    price: "Rp 100.000",
+    priceNote: "per character",
+    desc: "Waist-up detailed illustration. Full rendering with lighting and background option.",
+    includes: ["1 Character", "Full Shading", "Simple BG included", "2 Revisions"],
+    turnaround: "5–7 days",
+    accent: true,
+  },
+  {
+    tier: "03",
+    name: "Full Body",
+    price: "Rp 175.000",
+    priceNote: "per character",
+    desc: "Complete full-body illustration with detailed background and advanced rendering.",
+    includes: ["1 Character", "Detailed Rendering", "Custom Background", "3 Revisions"],
+    turnaround: "7–14 days",
+    accent: false,
+  },
+  {
+    tier: "04",
+    name: "Poster / Graphic Design",
+    price: "Rp 120.000",
+    priceNote: "per project",
+    desc: "Editorial posters, event flyers, social media graphics, or presentation materials.",
+    includes: ["Custom Layout", "Print-Ready File", "Source File", "2 Revisions"],
+    turnaround: "3–7 days",
+    accent: false,
+  },
+];
+
+const commStatus = "OPEN"; // change to "CLOSED" when not accepting
+---
+
+<Layout>
+  <!-- ═══════════════════════════════════════════════
+       NAVIGATION
+  ═══════════════════════════════════════════════ -->
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:50;padding:0 2rem;">
+    <div style="max-width:1100px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between;">
+
+      <!-- Logo -->
+      <a href="#profile" style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--text);text-decoration:none;letter-spacing:-0.02em;display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent-3);box-shadow:0 0 8px var(--accent-3);"></span>
+        CHandrA
+      </a>
+
+      <!-- Links -->
+      <div style="display:flex;align-items:center;gap:2rem;">
+        <div style="display:flex;gap:1.75rem;" class="hidden-mobile">
+          {['profile','works','commission','contact'].map(s => (
+            <a
+              href={`#${s}`}
+              class="nav-link"
+              style="font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;transition:color 0.2s ease;position:relative;"
+            >
+              {s}
+            </a>
+          ))}
+        </div>
+
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" aria-label="Toggle theme"
+          style="width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 0.3s,box-shadow 0.3s;color:var(--text);"
+          onmouseover="this.style.borderColor='var(--border-hi)';this.style.boxShadow='var(--glow)';"
+          onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none';"
+        >
+          <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Nav underline -->
+    <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:1100px;margin:0 auto;"></div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════
+       HERO / PROFILE
+  ═══════════════════════════════════════════════ -->
+  <section id="profile" style="min-height:100vh;display:flex;align-items:center;padding:100px 2rem 80px;position:relative;z-index:2;">
+    <div style="max-width:1100px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;" class="hero-grid">
+
+      <!-- Left: Text -->
+      <div>
+        <div class="section-label reveal" style="transition-delay:0.1s;">
+          <span style="display:inline-block;width:6px;height:6px;background:var(--accent-3);border-radius:50%;"></span>
+          Designer & Digital Artist
+        </div>
+
+        <div style="margin-bottom:1.5rem;" class="reveal" style="transition-delay:0.2s;">
+          <h1 class="glitch-wrap font-display"
+            data-text="CHANDRA"
+            style="font-size:clamp(3rem,8vw,6rem);font-weight:800;line-height:0.92;letter-spacing:-0.04em;color:var(--text);">
+            CHANDRA
+          </h1>
+          <p class="font-mono" style="font-size:0.75rem;letter-spacing:0.2em;color:var(--accent-3);margin-top:0.75rem;">
+            SMK N 1 LEMAHABANG · WEST JAVA · ID
+          </p>
+        </div>
+
+        <p class="reveal" style="transition-delay:0.3s;color:var(--text-dim);line-height:1.75;max-width:420px;margin-bottom:2rem;font-size:0.95rem;">
+          Kelas XI Graphic Design student with a focus on digital illustration, poster design, and visual identity. 
+          Head of the Graphic Design Division — turning concepts into visuals that speak.
+        </p>
+
+        <!-- Skills Badges -->
+        <div class="reveal" style="transition-delay:0.4s;display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:2.5rem;">
+          {['Krita', 'ibispaint', 'Illustrator', 'Branding', 'Fan Art', 'Poster Design'].map(s => (
+            <span class="tag">{s}</span>
+          ))}
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="reveal" style="transition-delay:0.5s;display:flex;gap:1rem;flex-wrap:wrap;">
+          <a href="#works"
+            style="font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.75rem 1.75rem;background:var(--accent-2);color:#fff;text-decoration:none;border-radius:3px;transition:background 0.2s,box-shadow 0.2s;"
+            onmouseover="this.style.background='var(--accent-3)';this.style.boxShadow='var(--glow-hi)';"
+            onmouseout="this.style.background='var(--accent-2)';this.style.boxShadow='none';"
+          >
+            View Works
+          </a>
+          <a href="#commission"
+            style="font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.75rem 1.75rem;border:1px solid var(--border-hi);color:var(--text);text-decoration:none;border-radius:3px;transition:border-color 0.2s,box-shadow 0.2s;"
+            onmouseover="this.style.borderColor='var(--accent-3)';this.style.boxShadow='var(--glow)';"
+            onmouseout="this.style.borderColor='var(--border-hi)';this.style.boxShadow='none';"
+          >
+            Commission Me
+          </a>
+        </div>
+
+        <!-- Social Links -->
+        <div class="reveal" style="transition-delay:0.6s;display:flex;gap:1.25rem;margin-top:2.5rem;align-items:center;">
+          <span class="font-mono" style="font-size:0.6rem;letter-spacing:0.15em;color:var(--text-faint);text-transform:uppercase;">Find me</span>
+          {[
+            { label: 'Instagram', href: 'https://instagram.com/', icon: 'IG' },
+            { label: 'Twitter/X', href: 'https://x.com/', icon: 'X' },
+            { label: 'Behance', href: 'https://behance.net/', icon: 'Be' },
+            { label: 'Bluesky', href: 'https://bsky.app/', icon: 'BSky' },
+          ].map(s => (
+            <a href={s.href} target="_blank" rel="noopener noreferrer"
+              title={s.label}
+              class="font-mono"
+              style="font-size:0.65rem;letter-spacing:0.12em;color:var(--text-dim);text-decoration:none;padding:4px 8px;border:1px solid var(--border);border-radius:2px;transition:all 0.2s ease;"
+              onmouseover="this.style.borderColor='var(--accent-3)';this.style.color='var(--accent-3)';"
+              onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)';"
+            >
+              {s.icon}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Right: Portrait Frame -->
+      <div class="reveal" style="transition-delay:0.3s;display:flex;justify-content:center;">
+        <div style="position:relative;width:340px;height:420px;">
+          <!-- Corner decorations -->
+          <div style="position:absolute;top:-10px;left:-10px;width:32px;height:32px;border-top:2px solid var(--accent-3);border-left:2px solid var(--accent-3);z-index:2;"></div>
+          <div style="position:absolute;bottom:-10px;right:-10px;width:32px;height:32px;border-bottom:2px solid var(--accent-3);border-right:2px solid var(--accent-3);z-index:2;"></div>
+
+          <!-- Photo frame -->
+          <div class="glass" style="width:100%;height:100%;border-radius:4px;overflow:hidden;position:relative;">
+            <!-- Replace src with your actual photo -->
+            <img
+              src="https://images.unsplash.com/photo-1614534369874-2b5c8e94d50c?w=600&q=80"
+              alt="Profile photo"
+              style="width:100%;height:100%;object-fit:cover;filter:saturate(0.85);mix-blend-mode:luminosity;transition:filter 0.4s,mix-blend-mode 0.4s;"
+              onmouseover="this.style.filter='saturate(1)';this.style.mixBlendMode='normal';"
+              onmouseout="this.style.filter='saturate(0.85)';this.style.mixBlendMode='luminosity';"
+            />
+            <!-- Color tint overlay -->
+            <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(138,36,75,0.15),transparent 60%);pointer-events:none;"></div>
+          </div>
+
+          <!-- Floating stat card -->
+          <div class="glass font-mono" style="position:absolute;bottom:-20px;left:-24px;padding:10px 16px;font-size:0.65rem;letter-spacing:0.1em;z-index:3;">
+            <div style="color:var(--text-faint);text-transform:uppercase;margin-bottom:2px;">Status</div>
+            <div style="color:var(--accent-3);">Available for Commissions</div>
+          </div>
+
+          <!-- Floating badge -->
+          <div class="glass font-mono" style="position:absolute;top:-16px;right:-16px;padding:8px 14px;font-size:0.65rem;letter-spacing:0.1em;z-index:3;">
+            <div style="color:var(--text-faint);text-transform:uppercase;margin-bottom:2px;">Role</div>
+            <div style="color:var(--text);">Head of Design Div.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div style="position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;opacity:0.4;">
+      <span class="font-mono" style="font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim);">Scroll</span>
+      <div style="width:1px;height:40px;background:linear-gradient(to bottom,var(--accent-2),transparent);animation:scrollPulse 2s ease infinite;"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       WORKS
+  ═══════════════════════════════════════════════ -->
+  <section id="works" style="padding:100px 2rem;position:relative;z-index:2;">
+    <div style="max-width:1100px;margin:0 auto;">
+
+      <div class="reveal" style="margin-bottom:3.5rem;">
+        <div class="section-label">
+          <span style="display:inline-block;width:6px;height:6px;background:var(--accent-3);border-radius:50%;"></span>
+          02 — Recent Works
+        </div>
+        <h2 class="font-display" style="font-size:clamp(2rem,5vw,3.5rem);font-weight:800;letter-spacing:-0.03em;color:var(--text);line-height:1;">
+          Selected<br/><em style="font-style:italic;color:var(--accent-2);">Projects</em>
+        </h2>
+      </div>
+
+      <!-- Works Grid -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;">
+        {works.map((w, i) => (
+          <a
+            href={w.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="glass tilt-card reveal"
+            style={`text-decoration:none;border-radius:6px;overflow:hidden;display:block;transition-delay:${i * 0.07}s;position:relative;`}
+          >
+            <!-- Thumbnail -->
+            <div style="position:relative;overflow:hidden;height:220px;">
+              <img
+                src={w.thumb}
+                alt={w.title}
+                loading="lazy"
+                style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease,filter 0.3s ease;filter:saturate(0.8);"
+                onmouseover="this.style.transform='scale(1.06)';this.style.filter='saturate(1)';"
+                onmouseout="this.style.transform='scale(1)';this.style.filter='saturate(0.8)';"
+              />
+
+              <!-- Video badge -->
+              {w.type === 'video' && (
+                <div style="position:absolute;top:12px;left:12px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+              )}
+
+              <!-- Platform badge -->
+              <div style="position:absolute;top:12px;right:12px;">
+                <span class="font-mono" style="font-size:0.6rem;letter-spacing:0.1em;padding:3px 8px;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);border-radius:2px;color:#fff;border:1px solid rgba(255,255,255,0.15);">
+                  {w.platform}
+                </span>
+              </div>
+
+              <!-- Hover overlay -->
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,transparent 50%);pointer-events:none;"></div>
+            </div>
+
+            <!-- Card body -->
+            <div style="padding:1.25rem 1.5rem 1.5rem;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;">
+                <span class="tag">{w.category}</span>
+                <span class="font-mono" style="font-size:0.6rem;color:var(--text-faint);">{w.year}</span>
+              </div>
+              <h3 class="font-display" style="font-size:1.05rem;font-weight:700;color:var(--text);line-height:1.3;margin-top:0.5rem;">
+                {w.title}
+              </h3>
+              <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.75rem;">
+                <span class="font-mono" style="font-size:0.65rem;color:var(--accent-3);letter-spacing:0.1em;">View →</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- More works link -->
+      <div class="reveal" style="margin-top:3rem;text-align:center;">
+        <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer"
+          class="font-mono"
+          style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;border-bottom:1px solid var(--border-hi);padding-bottom:2px;transition:color 0.2s,border-color 0.2s;"
+          onmouseover="this.style.color='var(--accent-3)';this.style.borderColor='var(--accent-3)';"
+          onmouseout="this.style.color='var(--text-dim)';this.style.borderColor='var(--border-hi)';"
+        >
+          See all works on Instagram
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       COMMISSION SHEET
+  ═══════════════════════════════════════════════ -->
+  <section id="commission" style="padding:100px 2rem;position:relative;z-index:2;">
+
+    <!-- Section bg accent -->
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(138,36,75,0.06),transparent 70%);pointer-events:none;z-index:-1;"></div>
+
+    <div style="max-width:1100px;margin:0 auto;">
+
+      <div class="reveal" style="margin-bottom:1rem;">
+        <div class="section-label">
+          <span style="display:inline-block;width:6px;height:6px;background:var(--accent-3);border-radius:50%;"></span>
+          03 — Commission Sheet
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+          <h2 class="font-display" style="font-size:clamp(2rem,5vw,3.5rem);font-weight:800;letter-spacing:-0.03em;color:var(--text);line-height:1;">
+            Let's Create<br/><em style="font-style:italic;color:var(--accent-2);">Together</em>
+          </h2>
+          <!-- Status Badge -->
+          <div class="glass font-mono" style="padding:8px 20px;border-radius:3px;display:flex;align-items:center;gap:8px;">
+            <span style={`display:inline-block;width:8px;height:8px;border-radius:50%;background:${commStatus==='OPEN'?'#22c55e':'#ef4444'};box-shadow:0 0 8px ${commStatus==='OPEN'?'#22c55e':'#ef4444'};`}></span>
+            <span style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text);">
+              Commissions {commStatus}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <p class="reveal" style="color:var(--text-dim);max-width:520px;line-height:1.75;margin-bottom:3rem;font-size:0.95rem;">
+        All commissions are made with care using Krita and ibispaint. Payment via GoPay / Dana / BCA transfer. 
+        Slots are limited — claim yours before they're gone.
+      </p>
+
+      <!-- Pricing Cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem;margin-bottom:3rem;">
+        {commissions.map((c, i) => (
+          <div
+            class={`glass tilt-card reveal${c.accent ? ' comm-featured' : ''}`}
+            style={`border-radius:6px;padding:1.75rem;display:flex;flex-direction:column;gap:1rem;transition-delay:${i * 0.08}s;position:relative;${c.accent ? 'border-color:var(--accent-2) !important;box-shadow:var(--glow) !important;' : ''}`}
+          >
+            {c.accent && (
+              <div style="position:absolute;top:-1px;left:50%;transform:translateX(-50%);">
+                <span class="font-mono" style="font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;background:var(--accent-2);color:#fff;padding:2px 12px;border-radius:0 0 4px 4px;">
+                  Popular
+                </span>
+              </div>
+            )}
+
+            <!-- Tier number -->
+            <div class="font-mono" style="font-size:0.65rem;letter-spacing:0.2em;color:var(--text-faint);">
+              TIER {c.tier}
+            </div>
+
+            <!-- Name & Price -->
+            <div>
+              <h3 class="font-display" style="font-size:1.15rem;font-weight:700;color:var(--text);">{c.name}</h3>
+              <div style="display:flex;align-items:baseline;gap:6px;margin-top:0.25rem;">
+                <span class="font-display" style="font-size:1.5rem;font-weight:800;color:var(--accent-3);">{c.price}</span>
+                <span class="font-mono" style="font-size:0.6rem;color:var(--text-faint);">{c.priceNote}</span>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <p style="font-size:0.85rem;color:var(--text-dim);line-height:1.6;">{c.desc}</p>
+
+            <!-- Includes -->
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:0.35rem;">
+              {c.includes.map(item => (
+                <li class="font-mono" style="font-size:0.65rem;color:var(--text-dim);letter-spacing:0.05em;display:flex;align-items:center;gap:6px;">
+                  <span style="color:var(--accent-3);">✓</span> {item}
+                </li>
+              ))}
+            </ul>
+
+            <!-- Turnaround -->
+            <div style="margin-top:auto;padding-top:0.75rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+              <span class="font-mono" style="font-size:0.6rem;letter-spacing:0.1em;color:var(--text-faint);text-transform:uppercase;">ETA</span>
+              <span class="font-mono" style="font-size:0.7rem;color:var(--text-dim);">{c.turnaround}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- TOS Summary -->
+      <div class="glass reveal" style="border-radius:6px;padding:2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;" class="tos-grid">
+        <div>
+          <h4 class="font-display" style="font-weight:700;color:var(--text);margin-bottom:1rem;font-size:1rem;">
+            Terms of Service
+          </h4>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.5rem;">
+            {[
+              'Payment is required upfront (50% or full)',
+              'No commercial use without extra fee',
+              'Do not claim the art as your own',
+              'I reserve the right to post the artwork',
+              'Complex designs may cost extra',
+            ].map(t => (
+              <li style="display:flex;align-items:flex-start;gap:8px;font-size:0.82rem;color:var(--text-dim);line-height:1.5;">
+                <span class="font-mono" style="color:var(--accent-3);flex-shrink:0;font-size:0.65rem;padding-top:2px;">01.</span>
+                {t}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-display" style="font-weight:700;color:var(--text);margin-bottom:1rem;font-size:1rem;">
+            What I Will Draw
+          </h4>
+          <div style="display:flex;flex-direction:column;gap:0.5rem;">
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+              {['OC / Original Characters','Fan Art','Vtubers','Genshin / Arknights','Couples','Mecha'].map(t => (
+                <span class="tag">{t}</span>
+              ))}
+            </div>
+            <div style="margin-top:1rem;">
+              <p class="font-mono" style="font-size:0.6rem;letter-spacing:0.1em;color:var(--accent-3);text-transform:uppercase;margin-bottom:0.5rem;">Will NOT draw:</p>
+              <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                {['NSFW','Hate symbols','Political content'].map(t => (
+                  <span style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);padding:2px 8px;border:1px solid var(--border);border-radius:2px;text-decoration:line-through;opacity:0.6;">{t}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="reveal" style="margin-top:2.5rem;text-align:center;">
+        <a href="#contact"
+          style="font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.875rem 2.5rem;background:var(--accent-2);color:#fff;text-decoration:none;border-radius:3px;transition:background 0.2s,box-shadow 0.2s;display:inline-block;"
+          onmouseover="this.style.background='var(--accent-3)';this.style.boxShadow='var(--glow-hi)';"
+          onmouseout="this.style.background='var(--accent-2)';this.style.boxShadow='none';"
+        >
+          Claim a Slot →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       CONTACT
+  ═══════════════════════════════════════════════ -->
+  <section id="contact" style="padding:100px 2rem 120px;position:relative;z-index:2;">
+    <div style="max-width:700px;margin:0 auto;text-align:center;">
+
+      <div class="reveal" style="display:flex;justify-content:center;margin-bottom:1.25rem;">
+        <div class="section-label" style="justify-content:center;">
+          <span style="display:inline-block;width:6px;height:6px;background:var(--accent-3);border-radius:50%;"></span>
+          04 — Contact
+        </div>
+      </div>
+
+      <h2 class="font-display reveal" style="font-size:clamp(2.25rem,6vw,4rem);font-weight:800;letter-spacing:-0.03em;line-height:1;margin-bottom:1.5rem;">
+        Got a project<br/>in <em style="font-style:italic;color:var(--accent-2);">mind?</em>
+      </h2>
+
+      <p class="reveal" style="color:var(--text-dim);line-height:1.75;max-width:400px;margin:0 auto 3rem;font-size:0.95rem;">
+        Whether it's a commission, collaboration, or just to say hi — my DMs and inbox are open.
+      </p>
+
+      <!-- Contact Buttons -->
+      <div class="reveal" style="display:flex;flex-direction:column;gap:1rem;max-width:440px;margin:0 auto 3rem;">
+        {[
+          { label: 'Direct Message on Instagram', href: 'https://instagram.com/', icon: '📷', primary: true },
+          { label: 'Message on Twitter / X', href: 'https://x.com/', icon: '𝕏', primary: false },
+          { label: 'Email Me', href: 'mailto:your@email.com', icon: '✉', primary: false },
+          { label: 'LINE / WhatsApp', href: '#', icon: '💬', primary: false },
+        ].map(c => (
+          <a
+            href={c.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="glass"
+            style={`display:flex;align-items:center;gap:1rem;padding:1rem 1.5rem;border-radius:4px;text-decoration:none;color:var(--text);transition:all 0.2s ease;${c.primary ? 'border-color:var(--border-hi) !important;' : ''}`}
+            onmouseover={`this.style.borderColor='var(--accent-3)';this.style.boxShadow='var(--glow)';`}
+            onmouseout={`this.style.borderColor='${c.primary ? 'var(--border-hi)' : 'var(--border)'}';this.style.boxShadow='none';`}
+          >
+            <span style="width:36px;height:36px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;">{c.icon}</span>
+            <span class="font-mono" style="font-size:0.72rem;letter-spacing:0.08em;flex:1;">{c.label}</span>
+            <span style="color:var(--accent-3);font-size:0.9rem;">→</span>
+          </a>
+        ))}
+      </div>
+
+      <!-- Divider -->
+      <div class="reveal" style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin-bottom:2.5rem;"></div>
+
+      <!-- Social Row -->
+      <div class="reveal" style="display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;">
+        {[
+          { label: 'Instagram', href: 'https://instagram.com/' },
+          { label: 'Twitter/X', href: 'https://x.com/' },
+          { label: 'Behance', href: 'https://behance.net/' },
+          { label: 'Bluesky', href: 'https://bsky.app/' },
+        ].map(s => (
+          <a href={s.href} target="_blank" rel="noopener noreferrer"
+            class="font-mono"
+            style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;transition:color 0.2s;"
+            onmouseover="this.style.color='var(--accent-3)';"
+            onmouseout="this.style.color='var(--text-dim)';"
+          >
+            {s.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════ -->
+  <footer style="position:relative;z-index:2;border-top:1px solid var(--border);padding:1.5rem 2rem;">
+    <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+      <span class="font-mono" style="font-size:0.6rem;letter-spacing:0.15em;color:var(--text-faint);text-transform:uppercase;">
+        © 2026 Chandra — All rights reserved
+      </span>
+      <span class="font-mono" style="font-size:0.6rem;letter-spacing:0.1em;color:var(--text-faint);">
+        Designed & coded with care ♥
+      </span>
+    </div>
+  </footer>
+</Layout>
+
+<style>
+  /* Nav active state */
+  .nav-link.nav-active { color: var(--accent-3) !important; }
+
+  /* Scroll pulse */
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 0.8; transform: scaleY(1.1); }
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .hero-grid { grid-template-columns: 1fr !important; }
+    .hero-grid > div:last-child { display: none; }
+    .tos-grid { grid-template-columns: 1fr !important; }
+    .hidden-mobile { display: none !important; }
+  }
+
+  /* Theme icon logic */
+  html.dark  #icon-moon { display: block; }
+  html.dark  #icon-sun  { display: none;  }
+  html.light #icon-sun  { display: block; }
+  html.light #icon-moon { display: none;  }
+</style>
